@@ -1,4 +1,5 @@
 ﻿
+
 namespace ChessProject.Board {
     internal class GameBoard {
 
@@ -16,8 +17,37 @@ namespace ChessProject.Board {
             return Pieces[line, column];
         }
 
+        public Piece Piece(Position pos) {
+            return Pieces[pos.Line, pos.Column];
+        }
 
 
+        public bool havePiece(Position pos) {
+            validPosition(pos);
+            return Piece(pos) != null;
+        }
 
+        public void putPiece(Piece p, Position pos) {
+            if (havePiece(pos)) {
+                throw new GameBoardException("Já existe uma peça nessa posição!");
+            }
+            Pieces[pos.Line, pos.Column] = p;
+            p.Position = pos;
+        }
+
+        public bool positionCheck(Position pos) {
+            if (pos.Line < 0 || pos.Line >= Lines || pos.Column < 0 || pos.Column >= Columns) {
+                return false;
+            }
+            return true;        
+        }
+
+        public void validPosition(Position pos) {
+            if (!positionCheck(pos)) {
+                throw new GameBoardException("Posição inválida!");
+            }
+        }
+
+        
     }
 }

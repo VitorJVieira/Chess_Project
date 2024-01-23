@@ -13,11 +13,12 @@ namespace ChessProject.Board {
         public int MovesQuant { get; set; } //How many moves the piece already made
         public GameBoard Board { get; set; }
 
-        public Piece(Position position, Color color, GameBoard board) {
-            Position = position;
+        public Piece(Color color, GameBoard board) {
+            Position = null;
             Color = color;
             MovesQuant = 0;
             Board = board;
         }
+
     }
 }
