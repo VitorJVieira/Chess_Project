@@ -52,10 +52,11 @@ namespace ChessProject.Board {
             return true;        
         }
 
-        public void validPosition(Position pos) {
+        public bool validPosition(Position pos) {
             if (!positionCheck(pos)) {
                 throw new GameBoardException("Posição inválida!");
             }
+            return true;
         }
 
         

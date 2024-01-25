@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ChessProject.Board {
-    internal class Piece {
+    abstract class Piece {
 
         public Position Position { get; set; }
 
@@ -19,6 +19,8 @@ namespace ChessProject.Board {
             MovesQuant = 0;
             Board = board;
         }
+
+        public abstract bool[,] possibleMoviments();
 
         public void addMovesQuant() {
             MovesQuant++;
