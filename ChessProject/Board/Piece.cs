@@ -20,5 +20,9 @@ namespace ChessProject.Board {
             Board = board;
         }
 
+        public void addMovesQuant() {
+            MovesQuant++;
+        }
+
     }
 }

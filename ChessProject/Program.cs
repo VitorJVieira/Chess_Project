@@ -6,18 +6,22 @@ namespace ChessProject {
         static void Main(string[] args) {
             try {
 
+                ChessMatch match = new ChessMatch();
+                
+                while (!match.Finished) {
+                    Console.Clear();
+                    Screen.printGameboard(match.board);
 
-                GameBoard b = new GameBoard(8, 8);
+                    Console.WriteLine();
+                    Console.Write("From: ");
+                    Position from = Screen.readChessPosition().toPosition();
+                    Console.Write("To: ");
+                    Position to = Screen.readChessPosition().toPosition();
 
-                b.putPiece(new Tower(Color.Black, b), new Position(0, 0));
-                b.putPiece(new Tower(Color.Black, b), new Position(1, 3));
-                b.putPiece(new King(Color.Black, b), new Position(0, 2));
+                    match.movePiece(from, to);
+                }
 
-                b.putPiece(new Tower(Color.White, b), new Position(4, 3));
-                b.putPiece(new Tower(Color.White, b), new Position(6, 2));
-                b.putPiece(new King(Color.White, b), new Position(4, 2));
-
-                Screen.printGameboard(b);
+                
             }
             catch (GameBoardException e) {
                 Console.WriteLine(e.Message);
