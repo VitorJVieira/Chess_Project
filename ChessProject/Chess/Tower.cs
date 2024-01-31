@@ -23,9 +23,9 @@ namespace ChessProject.Chess {
 
             //North
             pos.defineValue(Position.Line - 1 , Position.Column);
-            while (Board.validPosition(pos) && canMove(pos)) {
-                mat[Board.Lines, Board.Columns] = true;
-                if (Board.Piece(pos) == null && Board.Piece(pos).Color != Color) {
+            while (Board.positionCheck(pos) && canMove(pos)) {
+                mat[pos.Line, pos.Column] = true;
+                if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
                 pos.Line--;
@@ -33,9 +33,9 @@ namespace ChessProject.Chess {
 
             //South
             pos.defineValue(Position.Line + 1, Position.Column);
-            while (Board.validPosition(pos) && canMove(pos)) {
-                mat[Board.Lines, Board.Columns] = true;
-                if (Board.Piece(pos) == null && Board.Piece(pos).Color != Color) {
+            while (Board.positionCheck(pos) && canMove(pos)) {
+                mat[pos.Line, pos.Column] = true;
+                if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
                 pos.Line++;
@@ -43,9 +43,9 @@ namespace ChessProject.Chess {
 
             //East
             pos.defineValue(Position.Line, Position.Column + 1);
-            while (Board.validPosition(pos) && canMove(pos)) {
-                mat[Board.Lines, Board.Columns] = true;
-                if (Board.Piece(pos) == null && Board.Piece(pos).Color != Color) {
+            while (Board.positionCheck(pos) && canMove(pos)) {
+                mat[pos.Line, pos.Column] = true;
+                if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
                 pos.Column++;
@@ -53,9 +53,9 @@ namespace ChessProject.Chess {
 
             //West
             pos.defineValue(Position.Line, Position.Column - 1);
-            while (Board.validPosition(pos) && canMove(pos)) {
-                mat[Board.Lines, Board.Columns] = true;
-                if (Board.Piece(pos) == null && Board.Piece(pos).Color != Color) {
+            while (Board.positionCheck(pos) && canMove(pos)) {
+                mat[pos.Line, pos.Column] = true;
+                if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
                 pos.Column--;
