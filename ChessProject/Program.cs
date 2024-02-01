@@ -12,10 +12,7 @@ namespace ChessProject {
                     try {
 
                         Console.Clear();
-                        Screen.printGameboard(match.board);
-                        Console.WriteLine();
-                        Console.WriteLine("Turn: " + match.Turn);
-                        Console.WriteLine("Waiting for play: " + match.TurnPlayer);
+                        Screen.printMatch(match);
 
                         Console.WriteLine();
                         Console.Write("From: ");

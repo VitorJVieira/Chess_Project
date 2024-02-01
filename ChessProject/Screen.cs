@@ -4,6 +4,33 @@ using ChessProject.Chess;
 namespace ChessProject {
     internal class Screen {
 
+        public static void printMatch(ChessMatch match) {
+            printGameboard(match.board);
+            printCapturedPieces(match);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + match.Turn);
+            Console.WriteLine("Waiting for play: " + match.TurnPlayer);
+        }
+
+        public static void printCapturedPieces(ChessMatch match) {
+            Console.WriteLine("Captured pieces: ");
+            Console.Write("White: ");
+            printSet(match.capturedPieces(Color.Black));
+            Console.Write("Black: ");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            printSet(match.capturedPieces(Color.White));
+            Console.ForegroundColor = aux;
+        }
+
+        public static void printSet(HashSet<Piece> set) {
+            Console.Write("[");
+            foreach (Piece x in set) {
+                Console.Write(x + " ");
+            }
+            Console.WriteLine("]");
+        }
+        
         public static void printGameboard(GameBoard board) {
             for (int i = 0; i < board.Lines; i++) {
                 Console.Write(8 - i + " ");
