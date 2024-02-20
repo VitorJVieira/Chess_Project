@@ -9,18 +9,27 @@ namespace ChessProject {
             printCapturedPieces(match);
             Console.WriteLine();
             Console.WriteLine("Turn: " + match.Turn);
-            Console.WriteLine("Waiting for play: " + match.TurnPlayer);
+            if (!match.Finished) {
+                Console.WriteLine("Waiting for play: " + match.TurnPlayer);
+                if (match.Check) {
+                    Console.WriteLine("CHECK!");
+                }
+            } else {
+                Console.WriteLine("CHECK MATE!!");
+                Console.WriteLine("Winner: " + match.TurnPlayer);
+            }
         }
 
         public static void printCapturedPieces(ChessMatch match) {
+            ConsoleColor aux = Console.ForegroundColor;
             Console.WriteLine("Captured pieces: ");
             Console.Write("White: ");
-            printSet(match.capturedPieces(Color.Black));
-            Console.Write("Black: ");
-            ConsoleColor aux = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            printSet(match.capturedPieces(Color.White));
+            printSet(match.capturedPieces(Color.Black));
             Console.ForegroundColor = aux;
+            Console.Write("Black: ");
+            printSet(match.capturedPieces(Color.White));
+            
         }
 
         public static void printSet(HashSet<Piece> set) {

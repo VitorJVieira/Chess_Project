@@ -35,7 +35,8 @@ namespace ChessProject {
                         Console.ReadLine();
                     }
                 }
-
+                Console.Clear();
+                Screen.printMatch(match);
                 
             }
             catch (GameBoardException e) {

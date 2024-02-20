@@ -1,5 +1,7 @@
 ﻿using ChessProject.Board;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http.Headers;
 
 namespace ChessProject.Chess {
     internal class ChessMatch {
@@ -10,6 +12,7 @@ namespace ChessProject.Chess {
         public bool Finished { get; private set; }
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
+        public bool Check {  get; private set; }
 
 
 
@@ -17,12 +20,13 @@ namespace ChessProject.Chess {
             board = new GameBoard(8, 8);
             Turn = 1;
             TurnPlayer = Color.White;
+            Check = false;
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
             insertPieces();
         }
 
-        public void movePiece(Position from, Position to) {
+        public Piece movePiece(Position from, Position to) {
             Piece p = board.removePiece(from);
             p.addMovesQuant();
             Piece deadPiece = board.removePiece(to);
@@ -31,12 +35,42 @@ namespace ChessProject.Chess {
             if (deadPiece != null) {
                 captured.Add(deadPiece);
             }
+            return deadPiece;
+        }
+
+        public void undoMovement(Position from, Position to, Piece deadPiece) {
+            Piece p = board.removePiece(to);
+            p.removeMovesQuant();
+            if (deadPiece != null) {
+                board.putPiece(deadPiece, to);
+                captured.Remove(deadPiece);
+            }
+            board.putPiece(p, from);
         }
 
         public void makePlay(Position from, Position to) {
-            movePiece(from, to);
-            Turn++;
-            changePlayer();
+            Piece deadPiece = movePiece(from, to);
+            
+            if (isCheck(TurnPlayer)) {
+                undoMovement(from, to, deadPiece);
+                throw new GameBoardException("You can't put yourself in check!");
+            }
+
+            if (isCheck(opponent(TurnPlayer))) {
+                Check = true;
+
+            } else {
+                Check = false;
+            }
+
+            if (isCheckMate(opponent(TurnPlayer))) {
+                Finished = true;
+            } else {
+                Turn++;
+                changePlayer();
+            }
+
+            
         }
 
         public void validFrom(Position pos) {
@@ -86,28 +120,70 @@ namespace ChessProject.Chess {
             return aux;
         }
 
+        private Color opponent(Color color) {
+            if (color == Color.White) {
+                return Color.Black;
+            } else { 
+                return Color.White;
+            }
+        }
+
+        private Piece king(Color color) {
+            foreach (Piece x in inGamePieces(color)) {
+                if (x is King) {
+                    return x;
+                }
+            }
+            return null;
+        }
+
+        public bool isCheck(Color color) {
+            Piece r = king(color);
+            foreach (Piece x in inGamePieces(opponent(color))) {
+                bool[,] mat = x.possibleMoviments();
+                if (mat[r.Position.Line, r.Position.Column]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool isCheckMate(Color color) {
+            if (!isCheck(color)) {
+                return false;
+            }
+            foreach (Piece x in inGamePieces(color)) {
+                bool[,] mat = x.possibleMoviments();
+                for (int i = 0; i < board.Lines; i++) {
+                    for (int j = 0; j < board.Columns; j++) { 
+                        if (mat[i,j]) {
+                            Position from = x.Position;
+                            Position to = new Position(i, j);
+                            Piece piece = movePiece(from, to);
+                            bool testCheck = isCheck(color);
+                            undoMovement(from,to, piece);
+                            if (!testCheck) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public void insertNewPiece(char column, int line, Piece piece) {
             board.putPiece(piece, new ChessPosition(column,line).toPosition());
             pieces.Add(piece);
         }
 
         private void insertPieces() {
-            insertNewPiece('c', 8, new Tower(Color.Black, board));
-
-
-
-            insertNewPiece('c', 7, new Tower(Color.Black, board));
-            insertNewPiece('d', 7, new Tower(Color.Black, board));
-            insertNewPiece('e', 7, new Tower(Color.Black, board));
-            insertNewPiece('e', 8, new Tower(Color.Black, board));
-            insertNewPiece('d', 8, new King(Color.Black, board));
-
             insertNewPiece('c', 1, new Tower(Color.White, board));
-            insertNewPiece('c', 2, new Tower(Color.White, board));
-            insertNewPiece('d', 2, new Tower(Color.White, board));
-            insertNewPiece('e', 2, new Tower(Color.White, board));
-            insertNewPiece('e', 1, new Tower(Color.White, board));
+            insertNewPiece('h', 7, new Tower(Color.White, board));
             insertNewPiece('d', 1, new King(Color.White, board));
+
+            insertNewPiece('b', 8, new Tower(Color.Black, board));
+            insertNewPiece('a', 8, new King(Color.Black, board));
         }
 
 

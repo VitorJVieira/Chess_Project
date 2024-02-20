@@ -26,6 +26,10 @@ namespace ChessProject.Board {
             MovesQuant++;
         }
 
+        public void removeMovesQuant() {
+            MovesQuant--;
+        }
+
         public bool havePossibleMoves() {
             bool[,] mat = possibleMoviments();
             for (int i = 0; i<Board.Lines;  i++) {
