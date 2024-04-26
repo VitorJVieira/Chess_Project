@@ -1,19 +1,24 @@
 ﻿using ChessProject.Board;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ChessProject.Chess {
-    class King : Piece {
+    class Knight : Piece {
 
-        public King(Color color, GameBoard board) : base(color, board) {
+        public Knight(Color color, GameBoard board) : base(color, board) {
 
         }
 
         public override string ToString() {
-            return "R";
+            return "N"; //it will be used the N as the algebric notation, to not confused with the "K", symbol of King
         }
 
         private bool canMove(Position pos) {
             Piece p = Board.Piece(pos);
-            return p == null || p.Color != Color; 
+            return p == null || p.Color != Color;
         }
 
         public override bool[,] possibleMoviments() {
@@ -21,53 +26,48 @@ namespace ChessProject.Chess {
 
             Position pos = new Position(0, 0);
 
-            //North
-            pos.defineValue(Position.Line - 1, Position.Column);
+
+            
+            pos.defineValue(Position.Line - 1, Position.Column - 2);
             if (Board.positionCheck(pos) && canMove(pos)) {
                 mat[pos.Line, pos.Column] = true;
             }
 
-            //NorthEast
-            pos.defineValue(Position.Line - 1, Position.Column + 1);
+            pos.defineValue(Position.Line - 2, Position.Column - 1);
             if (Board.positionCheck(pos) && canMove(pos)) {
                 mat[pos.Line, pos.Column] = true;
             }
 
-            //East
-            pos.defineValue(Position.Line, Position.Column + 1);
+            pos.defineValue(Position.Line - 2, Position.Column + 1);
             if (Board.positionCheck(pos) && canMove(pos)) {
                 mat[pos.Line, pos.Column] = true;
             }
 
-            //SouthEast
-            pos.defineValue(Position.Line + 1, Position.Column + 1);
+            pos.defineValue(Position.Line - 1, Position.Column + 2);
             if (Board.positionCheck(pos) && canMove(pos)) {
                 mat[pos.Line, pos.Column] = true;
             }
 
-            //South
-            pos.defineValue(Position.Line + 1, Position.Column);
+            pos.defineValue(Position.Line + 1, Position.Column + 2);
             if (Board.positionCheck(pos) && canMove(pos)) {
                 mat[pos.Line, pos.Column] = true;
             }
 
-            //SoutWest
-            pos.defineValue(Position.Line + 1, Position.Column - 1);
+            pos.defineValue(Position.Line + 2, Position.Column + 1);
             if (Board.positionCheck(pos) && canMove(pos)) {
                 mat[pos.Line, pos.Column] = true;
             }
 
-            //West
-            pos.defineValue(Position.Line, Position.Column - 1);
+            pos.defineValue(Position.Line + 1, Position.Column - 2);
             if (Board.positionCheck(pos) && canMove(pos)) {
                 mat[pos.Line, pos.Column] = true;
             }
 
-            //NorthWest
-            pos.defineValue(Position.Line - 1, Position.Column - 1);
+            pos.defineValue(Position.Line + 2, Position.Column - 1);
             if (Board.positionCheck(pos) && canMove(pos)) {
                 mat[pos.Line, pos.Column] = true;
             }
+
 
             return mat;
         }

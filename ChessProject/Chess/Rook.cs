@@ -2,8 +2,8 @@
 
 
 namespace ChessProject.Chess {
-    internal class Tower : Piece{
-        public Tower(Color color, GameBoard board) : base(color, board) {
+    class Rook : Piece{
+        public Rook(Color color, GameBoard board) : base(color, board) {
 
         }
 
