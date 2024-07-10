@@ -34,7 +34,7 @@ namespace ChessProject.Chess {
                 if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
-                pos.defineValue(Position.Line - 1, Position.Column - 1);
+                pos.defineValue(pos.Line - 1, pos.Column - 1);
             }
 
             //NE
@@ -44,7 +44,7 @@ namespace ChessProject.Chess {
                 if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
-                pos.defineValue(Position.Line - 1, Position.Column + 1);
+                pos.defineValue(pos.Line - 1, pos.Column + 1);
             }
 
             //SW
@@ -54,7 +54,7 @@ namespace ChessProject.Chess {
                 if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
-                pos.defineValue(Position.Line + 1, Position.Column - 1);
+                pos.defineValue(pos.Line + 1, pos.Column - 1);
             }
 
             //SE
@@ -64,7 +64,7 @@ namespace ChessProject.Chess {
                 if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
-                pos.defineValue(Position.Line + 1, Position.Column + 1);
+                pos.defineValue(pos.Line + 1, pos.Column + 1);
             }
 
             return mat;

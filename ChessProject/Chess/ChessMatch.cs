@@ -35,6 +35,24 @@ namespace ChessProject.Chess {
             if (deadPiece != null) {
                 captured.Add(deadPiece);
             }
+
+            //Checking if is Castling 
+            if (p is King && to.Column == from.Column + 2) {
+                Position fromRook = new Position(from.Line, from.Column + 3);
+                Position toRook = new Position(from.Line, from.Column + 1);
+                Piece r = board.removePiece(fromRook);
+                r.addMovesQuant();
+                board.putPiece(r, toRook);
+            }
+
+            if (p is King && to.Column == from.Column - 2) {
+                Position fromRook = new Position(from.Line, from.Column - 4);
+                Position toRook = new Position(from.Line, from.Column - 1);
+                Piece r = board.removePiece(fromRook);
+                r.addMovesQuant();
+                board.putPiece(r, toRook);
+            }
+
             return deadPiece;
         }
 
@@ -46,6 +64,24 @@ namespace ChessProject.Chess {
                 captured.Remove(deadPiece);
             }
             board.putPiece(p, from);
+
+            //Undo the Castling
+            if (p is King && to.Column == from.Column + 2) {
+                Position fromRook = new Position(from.Line, from.Column + 3);
+                Position toRook = new Position(from.Line, from.Column + 1);
+                Piece r = board.removePiece(toRook);
+                r.removeMovesQuant();
+                board.putPiece(r, fromRook);
+            }
+
+            if (p is King && to.Column == from.Column - 2) {
+                Position fromRook = new Position(from.Line, from.Column - 4);
+                Position toRook = new Position(from.Line, from.Column - 1);
+                Piece r = board.removePiece(toRook);
+                r.removeMovesQuant();
+                board.putPiece(r, fromRook);
+            }
+
         }
 
         public void makePlay(Position from, Position to) {
@@ -144,7 +180,7 @@ namespace ChessProject.Chess {
                 if (mat[r.Position.Line, r.Position.Column]) {
                     return true;
                 }
-            }
+            } 
             return false;
         }
 
@@ -182,7 +218,7 @@ namespace ChessProject.Chess {
             insertNewPiece('b', 1, new Knight(Color.White, board));
             insertNewPiece('c', 1, new Bishop(Color.White, board));
             insertNewPiece('d', 1, new Queen(Color.White, board));
-            insertNewPiece('e', 1, new King(Color.White, board));
+            insertNewPiece('e', 1, new King(Color.White, board, this));
             insertNewPiece('f', 1, new Bishop(Color.White, board));
             insertNewPiece('g', 1, new Knight(Color.White, board));
             insertNewPiece('h', 1, new Rook(Color.White, board));
@@ -199,7 +235,7 @@ namespace ChessProject.Chess {
             insertNewPiece('b', 8, new Knight(Color.Black, board));
             insertNewPiece('c', 8, new Bishop(Color.Black, board));
             insertNewPiece('d', 8, new Queen(Color.Black, board));
-            insertNewPiece('e', 8, new King(Color.Black, board));
+            insertNewPiece('e', 8, new King(Color.Black, board, this));
             insertNewPiece('f', 8, new Bishop(Color.Black, board));
             insertNewPiece('g', 8, new Knight(Color.Black, board));
             insertNewPiece('h', 8, new Rook(Color.Black, board));

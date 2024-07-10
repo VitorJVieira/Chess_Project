@@ -33,7 +33,7 @@ namespace ChessProject.Chess {
                 if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
-                pos.Line--;
+                pos.defineValue(pos.Line - 1, pos.Column);
             }
 
             //South
@@ -43,7 +43,7 @@ namespace ChessProject.Chess {
                 if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
-                pos.Line++;
+                pos.defineValue(pos.Line + 1, pos.Column);
             }
 
             //East
@@ -53,7 +53,7 @@ namespace ChessProject.Chess {
                 if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
-                pos.Column++;
+                pos.defineValue(pos.Line, pos.Column + 1);
             }
 
             //West
@@ -63,7 +63,7 @@ namespace ChessProject.Chess {
                 if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
-                pos.Column--;
+                pos.defineValue(pos.Line, pos.Column - 1);
             }
 
             //NW
@@ -73,7 +73,7 @@ namespace ChessProject.Chess {
                 if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
-                pos.defineValue(Position.Line - 1, Position.Column - 1);
+                pos.defineValue(pos.Line - 1, pos.Column - 1);
             }
 
             //NE
@@ -83,7 +83,7 @@ namespace ChessProject.Chess {
                 if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
-                pos.defineValue(Position.Line - 1, Position.Column + 1);
+                pos.defineValue(pos.Line - 1, pos.Column + 1);
             }
 
             //SW
@@ -93,7 +93,7 @@ namespace ChessProject.Chess {
                 if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
-                pos.defineValue(Position.Line + 1, Position.Column - 1);
+                pos.defineValue(pos.Line + 1, pos.Column - 1);
             }
 
             //SE
@@ -103,7 +103,7 @@ namespace ChessProject.Chess {
                 if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color) {
                     break;
                 }
-                pos.defineValue(Position.Line + 1, Position.Column + 1);
+                pos.defineValue(pos.Line + 1, pos.Column + 1);
             }
 
             return mat;
