@@ -8,12 +8,12 @@ namespace ChessProject.Chess {
     internal class ChessMatch {
 
         public GameBoard board { get; private set; }
-        public int Turn {  get; private set; }
-        public Color TurnPlayer {  get; private set; }
+        public int Turn { get; private set; }
+        public Color TurnPlayer { get; private set; }
         public bool Finished { get; private set; }
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
-        public bool Check {  get; private set; }
+        public bool Check { get; private set; }
         public Piece vulnerableEnPassant { get; private set; }
 
 
@@ -62,7 +62,7 @@ namespace ChessProject.Chess {
                     if (p.Color == Color.White) {
                         PosP = new Position(to.Line + 1, to.Column);
                     } else {
-                        PosP = new Position(to.Line - 1 , to.Column);
+                        PosP = new Position(to.Line - 1, to.Column);
                     }
                     deadPiece = board.removePiece(PosP);
                     captured.Add(deadPiece);
@@ -116,10 +116,24 @@ namespace ChessProject.Chess {
 
         public void makePlay(Position from, Position to) {
             Piece deadPiece = movePiece(from, to);
-            
+
             if (isCheck(TurnPlayer)) {
                 undoMovement(from, to, deadPiece);
                 throw new GameBoardException("You can't put yourself in check!");
+            }
+
+            Piece p = board.Piece(to);
+
+            //Pawn Promotion 
+            if (p is Pawn) {
+                if ((p.Color == Color.White && to.Line == 0) || (p.Color == Color.Black && to.Line == 7)) {
+                    p = board.removePiece(to);
+                    pieces.Remove(p);
+                    Piece queen = new Queen(p.Color, board);
+                    
+                    board.putPiece(queen, to);
+                    pieces.Add(queen);
+                }
             }
 
             if (isCheck(opponent(TurnPlayer))) {
@@ -135,8 +149,6 @@ namespace ChessProject.Chess {
                 Turn++;
                 changePlayer();
             }
-
-            Piece p = board.Piece(to);
 
             //en passant
             if (p is Pawn && (to.Line == from.Line - 2 || from.Line == to.Line + 2)) {
@@ -197,7 +209,7 @@ namespace ChessProject.Chess {
         private Color opponent(Color color) {
             if (color == Color.White) {
                 return Color.Black;
-            } else { 
+            } else {
                 return Color.White;
             }
         }
@@ -218,7 +230,7 @@ namespace ChessProject.Chess {
                 if (mat[r.Position.Line, r.Position.Column]) {
                     return true;
                 }
-            } 
+            }
             return false;
         }
 
@@ -229,13 +241,13 @@ namespace ChessProject.Chess {
             foreach (Piece x in inGamePieces(color)) {
                 bool[,] mat = x.possibleMoviments();
                 for (int i = 0; i < board.Lines; i++) {
-                    for (int j = 0; j < board.Columns; j++) { 
-                        if (mat[i,j]) {
+                    for (int j = 0; j < board.Columns; j++) {
+                        if (mat[i, j]) {
                             Position from = x.Position;
                             Position to = new Position(i, j);
                             Piece piece = movePiece(from, to);
                             bool testCheck = isCheck(color);
-                            undoMovement(from,to, piece);
+                            undoMovement(from, to, piece);
                             if (!testCheck) {
                                 return false;
                             }
@@ -247,7 +259,7 @@ namespace ChessProject.Chess {
         }
 
         public void insertNewPiece(char column, int line, Piece piece) {
-            board.putPiece(piece, new ChessPosition(column,line).toPosition());
+            board.putPiece(piece, new ChessPosition(column, line).toPosition());
             pieces.Add(piece);
         }
 
